@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Box,Image,Heading,Grid,LinkBox, Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalFooter, ModalCloseButton, useDisclosure, ModalHeader, FormControl, FormLabel, Input, Stack} from '@chakra-ui/react';
+import {Box,Image,Heading,Grid,LinkBox, Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalFooter, ModalCloseButton, useDisclosure, ModalHeader,} from '@chakra-ui/react';
 import { Link } from 'gatsby';
 import Layout from '../components/Layout'
 import axios from 'axios';
@@ -10,10 +10,8 @@ export default function Index() {
 
   const [status, setStatus ] = useState('loading...');
   const [photos, setPhotos] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [image, setImage] = useState(null);
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState(null);
+  const addPhoto = (photo) => setPhotos([...photos,photo]);
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     if (status !== "loading...") return;
@@ -28,24 +26,6 @@ export default function Index() {
     });
   }, [status]);
 
-  // const imageChanged = (newImage) => {
-  //   setImage(newImage);
-  // }
-  const nameChanged = evt => {
-    const val = evt.target.value;
-    setName(val);
-  }
-  const slugChanged = evt => {
-    const val = evt.target.value;
-    setSlug(val);
-  }
-  const handleCreate = async event => {
-    if(name && slug === '') return;
-    await axios.post('/api/createPhoto', { name, image, slug });
-    const newList = photos.concat({ name, image, slug });
-    setPhotos(newList);
-  }
-
   return (
     <Layout>
       <Box p={6}>
@@ -57,45 +37,7 @@ export default function Index() {
           <ModalHeader>Upload Photo</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Stack spacing={4}>
-      <FormControl id="name">
-        <FormLabel>Name</FormLabel>
-        <Input
-         type="text"
-         onChange={evt => nameChanged(evt)}
-         />
-      </FormControl>
-      <Stack spacing={10}>
-      <Stack
-        direction={{ base: 'column', sm: 'row' }}
-        align={'start'}
-        justify={'space-between'}>
-        {/* <FormControl id="image">
-          <FormLabel>Image</FormLabel>
-          <Input
-            type="file"
-            onChange={newImage => imageChanged(newImage)}
-             />
-        </FormControl> */}
-        <FormControl id="slug">
-          <FormLabel>Slug</FormLabel>
-          <Input
-            type="number"
-            onChange={evt => slugChanged(evt)}
-           />
-        </FormControl>
-        </Stack>
-        <Button
-        onClick={evt => handleCreate(evt)}
-          bg={'blue.400'}
-          color={'white'}
-          _hover={{
-            bg: 'blue.500',
-          }}>
-          create photo
-        </Button>
-      </Stack>
-    </Stack>
+            <AddPhoto addPhoto={addPhoto}  />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>
