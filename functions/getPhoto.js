@@ -26,6 +26,6 @@
 
      return {
        statusCode: 200,
-       body: JSON.stringify({ messages: data.allMessages.data })
+       body: JSON.stringify({ messages: data.listPhotos.data })
      };
    };

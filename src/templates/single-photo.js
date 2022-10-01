@@ -12,7 +12,7 @@ const SinglePhoto = ({data}) => {
         <Stack py={6}>
           <Image src={photo.image} alt={`${photo.name} photo`} />
           <Heading>{photo.name}</Heading>
-          <Box as={'p'}>{photo.description}</Box>
+          {/* <Box as={'p'}>{photo.description}</Box> */}
         </Stack>
       </Container>
     </Layout>
@@ -24,14 +24,13 @@ export default SinglePhoto;
 export const query = graphql`
   query SinglePhotoView($slug: String) {
     webiny {
-      listPhotos(where: {slug: $slug}) {
-        data {
-					slug
-          image
-          name
-          description
+        listPhotos(where: {slug: $slug}) {
+            data {
+                slug
+                image
+                name
+            }
         }
-      }
     }
   }
 `
